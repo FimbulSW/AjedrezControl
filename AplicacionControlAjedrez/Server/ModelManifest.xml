@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<ModelDocumentManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Documents>
+    <Document FullPath="c:\users\root\documents\visual studio 2012\Projects\AplicacionControlAjedrez\AplicacionControlAjedrez\Common\Properties\Common.lsml" Checksum="914CE77754F3D962EAAACADD5F447CF1345CE78FAD3CDA4FFED7C0616552820F" />
+    <Document FullPath="c:\users\root\documents\visual studio 2012\Projects\AplicacionControlAjedrez\AplicacionControlAjedrez\Server\Properties\Service.lsml" Checksum="064E564329BA864BDEDCC20797A16673CCC81B3AC6855C84401BEF3CF07C912D" />
+  </Documents>
+</ModelDocumentManifest>

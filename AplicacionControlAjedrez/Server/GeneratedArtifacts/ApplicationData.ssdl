@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ApplicationDataStore" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ApplicationDataStore">
+    <EntitySet Name="EquipoSet" EntityType="ApplicationDataStore.Equipo" store:Type="Tables" Schema="dbo" Table="EquipoSet" />
+    <EntitySet Name="UsuarioSet" EntityType="ApplicationDataStore.Usuario" store:Type="Tables" Schema="dbo" Table="UsuarioSet" />
+    <EntitySet Name="PrestamoSet" EntityType="ApplicationDataStore.Prestamo" store:Type="Tables" Schema="dbo" Table="PrestamoSet" />
+    <EntitySet Name="DesperfectoSet" EntityType="ApplicationDataStore.Desperfecto" store:Type="Tables" Schema="dbo" Table="DesperfectoSet" />
+    <EntitySet Name="DesperfectoDevolucionSet" EntityType="ApplicationDataStore.DesperfectoDevolucion" store:Type="Tables" Schema="dbo" Table="DesperfectoDevolucionSet" />
+    <EntitySet Name="DevolucionSet" EntityType="ApplicationDataStore.Devolucion" store:Type="Tables" Schema="dbo" Table="DevolucionSet" />
+    <AssociationSet Name="DesperfectoDevolucion_Desperfecto" Association="ApplicationDataStore.DesperfectoDevolucion_Desperfecto">
+      <End Role="Desperfecto" EntitySet="DesperfectoSet" />
+      <End Role="DesperfectoDevolucion" EntitySet="DesperfectoDevolucionSet" />
+    </AssociationSet>
+    <AssociationSet Name="Prestamo_Usuario" Association="ApplicationDataStore.Prestamo_Usuario">
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+      <End Role="Prestamo" EntitySet="PrestamoSet" />
+    </AssociationSet>
+    <AssociationSet Name="Devolucion_Prestamo" Association="ApplicationDataStore.Devolucion_Prestamo">
+      <End Role="Prestamo" EntitySet="PrestamoSet" />
+      <End Role="Devolucion" EntitySet="DevolucionSet" />
+    </AssociationSet>
+    <AssociationSet Name="DesperfectoDevolucion_Devolucion" Association="ApplicationDataStore.DesperfectoDevolucion_Devolucion">
+      <End Role="Devolucion" EntitySet="DevolucionSet" />
+      <End Role="DesperfectoDevolucion" EntitySet="DesperfectoDevolucionSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Equipo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="Tipo" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Cantidad" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="Nombre" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Matricula" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Baneado" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Prestamo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="Prestamo_Usuario" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Desperfecto">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="Tipo" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Monto" Type="decimal" Nullable="false" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="DesperfectoDevolucion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="Fecha" Type="datetime" Nullable="false" />
+    <Property Name="DesperfectoPrestamos_Desperfecto" Type="int" Nullable="false" />
+    <Property Name="DesperfectoDevolucion_Devolucion" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Devolucion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <Association Name="DesperfectoDevolucion_Desperfecto">
+    <End Role="Desperfecto" Type="ApplicationDataStore.Desperfecto" Multiplicity="1" />
+    <End Role="DesperfectoDevolucion" Type="ApplicationDataStore.DesperfectoDevolucion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Desperfecto">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DesperfectoDevolucion">
+        <PropertyRef Name="DesperfectoPrestamos_Desperfecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Prestamo_Usuario">
+    <End Role="Usuario" Type="ApplicationDataStore.Usuario" Multiplicity="1" />
+    <End Role="Prestamo" Type="ApplicationDataStore.Prestamo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Prestamo">
+        <PropertyRef Name="Prestamo_Usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Devolucion_Prestamo">
+    <End Role="Prestamo" Type="ApplicationDataStore.Prestamo" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Devolucion" Type="ApplicationDataStore.Devolucion" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Prestamo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Devolucion">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DesperfectoDevolucion_Devolucion">
+    <End Role="Devolucion" Type="ApplicationDataStore.Devolucion" Multiplicity="1" />
+    <End Role="DesperfectoDevolucion" Type="ApplicationDataStore.DesperfectoDevolucion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Devolucion">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DesperfectoDevolucion">
+        <PropertyRef Name="DesperfectoDevolucion_Devolucion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
